@@ -1,0 +1,35 @@
+From 3b16da5064bb951911779b00736ecb10eb37c54a Mon Sep 17 00:00:00 2001
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Date: Tue, 14 Aug 2018 20:07:45 +0300
+Subject: [PATCH] dts: ls1021: readjust FIPER registers to emit PPS signal at
+ exactly 1 second
+
+* According to LS1021 reference manual, the timer fixed interval
+  periodic pulse generator (TMR_FIPER) must be configured to the desired
+  trigger period in nanoseconds, MINUS exactly one TCLK_PERIOD (in order
+  to re-trigger). Since TCLK_PERIOD is 5 nanoseconds, the correct value
+  is 999999995 not 999999990.
+
+Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+---
+ arch/arm/boot/dts/ls1021a.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/ls1021a.dtsi b/arch/arm/boot/dts/ls1021a.dtsi
+index 4f1bbfe..7d91aa4 100644
+--- a/arch/arm/boot/dts/ls1021a.dtsi
++++ b/arch/arm/boot/dts/ls1021a.dtsi
+@@ -599,8 +599,8 @@
+ 			fsl,tclk-period = <5>;
+ 			fsl,tmr-prsc    = <2>;
+ 			fsl,tmr-add     = <0xaaaaaaab>;
+-			fsl,tmr-fiper1  = <999999990>;
+-			fsl,tmr-fiper2  = <99990>;
++			fsl,tmr-fiper1  = <999999995>;
++			fsl,tmr-fiper2  = <99995>;
+ 			fsl,max-adj     = <499999999>;
+ 		};
+ 
+-- 
+2.7.4
+

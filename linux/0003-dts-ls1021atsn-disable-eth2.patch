@@ -1,0 +1,31 @@
+From 87227c6af380b51d6f648afaf638adf3a59f0fe6 Mon Sep 17 00:00:00 2001
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+Date: Mon, 25 Jun 2018 18:30:14 +0300
+Subject: [PATCH] dts: ls1021atsn: prevent gianfar driver from probing on eth2
+
+* The connection between eth2 and the SJA1105 switch is pinmuxed with the
+  external 1588 pins. We are using a custom setup and want to prevent
+  electrical contention between RGMII and 1588.
+
+---
+ arch/arm/boot/dts/ls1021a-tsn.dts | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/ls1021a-tsn.dts b/arch/arm/boot/dts/ls1021a-tsn.dts
+index 907e539..99f05b8 100644
+--- a/arch/arm/boot/dts/ls1021a-tsn.dts
++++ b/arch/arm/boot/dts/ls1021a-tsn.dts
+@@ -124,9 +124,9 @@
+ };
+ 
+ &enet2 {
+ 	fixed-link = <0 1 1000 0 0>;
+ 	phy-connection-type = "rgmii";
+-	status = "ok";
++	status = "disabled";
+ };
+ 
+ &i2c0 {
+-- 
+2.7.4
+
